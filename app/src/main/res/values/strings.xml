@@ -3,4 +3,8 @@
     <string name="open_calculator">Open Calculator</string>
     <string name="welcome_calculator">Welcome to the Swissknife Calculator!</string>
     <string name="go_back">Go back?</string>
+    <string name="exit_message">Are you going out?</string>
+    <string name="yes">Yes.</string>
+    <string name="no">No!</string>
+    <string name="maybe">Maybe?</string>
 </resources>

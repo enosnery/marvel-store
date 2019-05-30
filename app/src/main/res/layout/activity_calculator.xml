@@ -5,21 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.CalculatorActivity">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/text_calculator"
+    <RelativeLayout
+        android:id="@+id/relative_calculator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="50sp"
-        android:textAlignment="center"/>
-    <Button
+        android:orientation="vertical">
+        <Button
         android:id="@+id/button_calculator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    </RelativeLayout>
 
-</LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
