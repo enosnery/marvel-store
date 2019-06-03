@@ -1,13 +1,9 @@
 package com.enosnery.swissknife.activity
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.support.v4.content.Loader
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
-import android.text.InputType
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -17,18 +13,21 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import com.enosnery.swissknife.R.string.*
 import com.enosnery.swissknife.R.layout.*
+import com.enosnery.swissknife.R.drawable.*
+
 
 
 import kotlinx.android.synthetic.main.activity_calculator.*
 
 class CalculatorActivity : AppCompatActivity() {
-    enum class operationType{
+    enum class OperationType{
         PLUS,
         MINUS,
         MULTIPLICATION,
         DIVISION,
         NULL
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(activity_calculator)
@@ -57,7 +56,7 @@ class CalculatorActivity : AppCompatActivity() {
         var firstValue = 0.0f
         var secondValue = 0.0f
         var total = 0.0f
-        var operation: operationType = operationType.NULL
+        var operation: OperationType = OperationType.NULL
         var isSecondValue = false
 
 
@@ -114,6 +113,7 @@ class CalculatorActivity : AppCompatActivity() {
         params2.addRule(RelativeLayout.RIGHT_OF, btnShow1.id)
         btnShow2.text = "2"
         btnShow2.layoutParams = params2
+        btnShow2.setBackgroundResource(button_calc_number)
         btnShow2.setOnClickListener {
            checkZero("2", editText)
         }
@@ -127,6 +127,7 @@ class CalculatorActivity : AppCompatActivity() {
         params3.addRule(RelativeLayout.BELOW, editText.id)
         btnShow3.text = "3"
         btnShow3.layoutParams = params3
+        btnShow3.setBackgroundResource(button_calc_number)
         btnShow3.setOnClickListener {
             checkZero("3", editText)
         }
@@ -139,6 +140,7 @@ class CalculatorActivity : AppCompatActivity() {
         params4.addRule(RelativeLayout.BELOW, btnShow1.id)
         btnShow4.text = "4"
         btnShow4.layoutParams = params4
+        btnShow4.setBackgroundResource(button_calc_number)
         btnShow4.setOnClickListener {
             checkZero("4", editText)
         }
@@ -152,6 +154,7 @@ class CalculatorActivity : AppCompatActivity() {
         params5.addRule(RelativeLayout.BELOW, btnShow2.id)
         btnShow5.text = "5"
         btnShow5.layoutParams = params5
+        btnShow5.setBackgroundResource(button_calc_number)
         btnShow5.setOnClickListener {
             checkZero("5", editText)
         }
@@ -165,6 +168,7 @@ class CalculatorActivity : AppCompatActivity() {
         params6.addRule(RelativeLayout.BELOW, btnShow3.id)
         btnShow6.text = "6"
         btnShow6.layoutParams = params6
+        btnShow6.setBackgroundResource(button_calc_number)
         btnShow6.setOnClickListener {
             checkZero("6", editText)
         }
@@ -177,6 +181,7 @@ class CalculatorActivity : AppCompatActivity() {
         params7.addRule(RelativeLayout.BELOW, btnShow4.id)
         btnShow7.text = "7"
         btnShow7.layoutParams = params7
+        btnShow7.setBackgroundResource(button_calc_number)
         btnShow7.setOnClickListener {
             checkZero("7", editText)
         }
@@ -190,6 +195,7 @@ class CalculatorActivity : AppCompatActivity() {
         params8.addRule(RelativeLayout.BELOW, btnShow5.id)
         btnShow8.text = "8"
         btnShow8.layoutParams = params8
+        btnShow8.setBackgroundResource(button_calc_number)
         btnShow8.setOnClickListener {
             checkZero("8", editText)
         }
@@ -203,6 +209,7 @@ class CalculatorActivity : AppCompatActivity() {
         params9.addRule(RelativeLayout.BELOW, btnShow6.id)
         btnShow9.text = "9"
         btnShow9.layoutParams = params9
+        btnShow9.setBackgroundResource(button_calc_number)
         btnShow9.setOnClickListener {
             checkZero("9", editText)
         }
@@ -228,6 +235,7 @@ class CalculatorActivity : AppCompatActivity() {
         params0.addRule(RelativeLayout.BELOW, btnShow8.id)
         btnShow0.text = "0"
         btnShow0.layoutParams = params0
+        btnShow0.setBackgroundResource(button_calc_number)
         btnShow0.setOnClickListener {
             checkZero("0", editText)
         }
@@ -269,9 +277,9 @@ class CalculatorActivity : AppCompatActivity() {
             if(!isSecondValue) {
                 if (!editText.text.toString().toFloat().equals(0.0f)) {
                     firstValue = editText.text.toString().toFloat()
-                    operation = operationType.PLUS
+                    operation = OperationType.PLUS
                     isSecondValue = true
-                    editText.setText("0")
+                    editText.setText("%.2f".format(0f))
                 }
             }
         }
@@ -329,18 +337,49 @@ class CalculatorActivity : AppCompatActivity() {
         relative_calculator?.addView(btnShowClear)
         //endregion Button Clear
 
+        //region [Button Styles]
+        buttonStyleNumbers(btnShow0)
+        buttonStyleNumbers(btnShow1)
+        buttonStyleNumbers(btnShow2)
+        buttonStyleNumbers(btnShow3)
+        buttonStyleNumbers(btnShow4)
+        buttonStyleNumbers(btnShow5)
+        buttonStyleNumbers(btnShow6)
+        buttonStyleNumbers(btnShow7)
+        buttonStyleNumbers(btnShow8)
+        buttonStyleNumbers(btnShow9)
+        buttonStyleOperands(btnShowDecimal)
+        buttonStyleOperands(btnShowEquals)
+        buttonStyleOperands(btnShowPlus)
+        buttonStyleOperands(btnShowMinus)
+        buttonStyleOperands(btnShowDivision)
+        buttonStyleOperands(btnShowTimes)
+        //endregion
+
     }
 
+    private fun buttonStyleNumbers(btn : Button?){
+            btn?.setBackgroundResource(button_calc_number)
+            btn?.setTextColor(Color.parseColor("#0B7000"))
+            btn?.setShadowLayer(5f, 0f,0f,Color.parseColor("#A8A8A8"))
+            btn?.textSize = 30f
+    }
+
+    private fun buttonStyleOperands(btn : Button?){
+        btn?.setBackgroundResource(button_calc_number)
+        btn?.setTextColor(Color.parseColor("#707070"))
+        btn?.setShadowLayer(5f, 0f,0f,Color.parseColor("#A8A8A8"))
+        btn?.textSize = 30f
+    }
 
     private fun checkZero(value: String?, editText: EditText?){
         var temp = editText?.text.toString()
         if(temp.length < 10) {
-            if (temp != "0") {
+            if (temp.toFloat() != 0.00f) {
                 temp += value
                 editText?.setText(temp)
             } else {
                 editText?.setText(value)
-
             }
         }
     }
