@@ -26,7 +26,8 @@ class CalculatorActivity : AppCompatActivity() {
         PLUS,
         MINUS,
         MULTIPLICATION,
-        DIVISION
+        DIVISION,
+        NULL
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,18 +52,20 @@ class CalculatorActivity : AppCompatActivity() {
         val btnShowMinus = Button(this)
         val btnShowTimes = Button(this)
         val btnShowDivision = Button(this)
+        val btnShowClear = Button(this)
 
-        var firstValue: Float
-        var secondValue: Float
-        var total: Float
-        var operation: operationType
+        var firstValue = 0.0f
+        var secondValue = 0.0f
+        var total = 0.0f
+        var operation: operationType = operationType.NULL
+        var isSecondValue = false
 
 
         //endregion
 
         //region [LayoutParams]
         val layoutparams = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        layoutparams.setMargins(10,20,10,10)
+        layoutparams.setMargins(30,30,30,30)
         relativeLayout.layoutParams = layoutparams
         //endregion
 
@@ -72,6 +75,7 @@ class CalculatorActivity : AppCompatActivity() {
         button_calculator.layoutParams = backparams
         button_calculator.text = getString(go_back)
         button_calculator.setTextColor(Color.BLACK)
+
         button_calculator.setOnClickListener {
 
             finish()
@@ -81,11 +85,12 @@ class CalculatorActivity : AppCompatActivity() {
         //region [EditText]
         editText.id = View.generateViewId()
         val editparams = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        editparams.addRule(RelativeLayout.ALIGN_RIGHT)
+        editparams.addRule(RelativeLayout.TEXT_ALIGNMENT_TEXT_END)
         editText.layoutParams = editparams
-        editText.setText("0")
+        editText.setText("%.2f".format(total))
         editText.focusable = EditText.NOT_FOCUSABLE
-        editText.inputType = InputType.TYPE_CLASS_NUMBER
+        editText.gravity = Gravity.END
+        editText.setPadding(15,15,30,15)
 
         relative_calculator?.addView(editText)
         //endregion
@@ -97,9 +102,7 @@ class CalculatorActivity : AppCompatActivity() {
         params1.addRule(RelativeLayout.BELOW, editText.id)
         btnShow1.layoutParams = params1
         btnShow1.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "1"
-            editText.setText(inner)
+           checkZero("1", editText)
         }
         relative_calculator?.addView(btnShow1)
         //endregion Button 1
@@ -112,9 +115,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow2.text = "2"
         btnShow2.layoutParams = params2
         btnShow2.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "2"
-            editText.setText(inner)
+           checkZero("2", editText)
         }
         relative_calculator?.addView(btnShow2)
         //endregion Button 2
@@ -127,9 +128,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow3.text = "3"
         btnShow3.layoutParams = params3
         btnShow3.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "3"
-            editText.setText(inner)
+            checkZero("3", editText)
         }
         relative_calculator?.addView(btnShow3)
         //endregion Button 3
@@ -141,9 +140,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow4.text = "4"
         btnShow4.layoutParams = params4
         btnShow4.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "4"
-            editText.setText(inner)
+            checkZero("4", editText)
         }
         relative_calculator?.addView(btnShow4)
         //endregion Button 4
@@ -156,9 +153,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow5.text = "5"
         btnShow5.layoutParams = params5
         btnShow5.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "5"
-            editText.setText(inner)
+            checkZero("5", editText)
         }
         relative_calculator?.addView(btnShow5)
         //endregion Button 5
@@ -171,9 +166,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow6.text = "6"
         btnShow6.layoutParams = params6
         btnShow6.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "6"
-            editText.setText(inner)
+            checkZero("6", editText)
         }
         relative_calculator?.addView(btnShow6)
         //endregion Button 6
@@ -185,9 +178,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow7.text = "7"
         btnShow7.layoutParams = params7
         btnShow7.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "7"
-            editText.setText(inner)
+            checkZero("7", editText)
         }
         relative_calculator?.addView(btnShow7)
         //endregion Button 7
@@ -200,9 +191,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow8.text = "8"
         btnShow8.layoutParams = params8
         btnShow8.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "8"
-            editText.setText(inner)
+            checkZero("8", editText)
         }
         relative_calculator?.addView(btnShow8)
         //endregion Button 8
@@ -215,9 +204,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow9.text = "9"
         btnShow9.layoutParams = params9
         btnShow9.setOnClickListener {
-            var inner = editText.text.toString()
-            inner += "9"
-            editText.setText(inner)
+            checkZero("9", editText)
         }
         relative_calculator?.addView(btnShow9)
         //endregion Button 9
@@ -242,15 +229,7 @@ class CalculatorActivity : AppCompatActivity() {
         btnShow0.text = "0"
         btnShow0.layoutParams = params0
         btnShow0.setOnClickListener {
-            var inner = editText.text.toString()
-            if (inner != "") {
-                inner += "0"
-            editText.setText(inner)
-            }else if (inner == "0" || inner == ""){
-                editText.text = null
-                inner = "0"
-                editText.setText(inner)
-            }
+            checkZero("0", editText)
         }
         relative_calculator?.addView(btnShow0)
         //endregion Button 0
@@ -263,7 +242,18 @@ class CalculatorActivity : AppCompatActivity() {
         btnShowEquals.text = "="
         btnShowEquals.layoutParams = paramsEquals
         btnShowEquals.setOnClickListener {
-            Toast.makeText(this,"Não implementado :(", Toast.LENGTH_SHORT).show()
+            if (isSecondValue) {
+                secondValue = editText.text.toString().toFloat()
+                total = when (operation.ordinal) {
+                    0 -> firstValue + secondValue
+                    1 -> firstValue - secondValue
+                    2 -> firstValue * secondValue
+                    3 -> firstValue / secondValue
+                    else -> 0.0f
+                }
+                isSecondValue = false
+                editText.setText("%.2f".format(total))
+            }
         }
         relative_calculator?.addView(btnShowEquals)
         //endregion Button Equals
@@ -276,8 +266,14 @@ class CalculatorActivity : AppCompatActivity() {
         btnShowPlus.text = "+"
         btnShowPlus.layoutParams = paramsPlus
         btnShowPlus.setOnClickListener {
-            firstValue = editText.text.toString().toFloat()
-            operation = operationType.PLUS
+            if(!isSecondValue) {
+                if (!editText.text.toString().toFloat().equals(0.0f)) {
+                    firstValue = editText.text.toString().toFloat()
+                    operation = operationType.PLUS
+                    isSecondValue = true
+                    editText.setText("0")
+                }
+            }
         }
         relative_calculator?.addView(btnShowPlus)
         //endregion Button Plus
@@ -321,6 +317,32 @@ class CalculatorActivity : AppCompatActivity() {
         relative_calculator?.addView(btnShowDivision)
         //endregion Button Division
 
+        //region [Button Clear]
+        btnShowClear.id = View.generateViewId()
+        val paramsClear = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        paramsClear.addRule(RelativeLayout.BELOW, btnShowDecimal.id)
+        btnShowClear.text = "C"
+        btnShowClear.layoutParams = paramsClear
+        btnShowClear.setOnClickListener {
+            editText.setText("0")
+        }
+        relative_calculator?.addView(btnShowClear)
+        //endregion Button Clear
+
+    }
+
+
+    private fun checkZero(value: String?, editText: EditText?){
+        var temp = editText?.text.toString()
+        if(temp.length < 10) {
+            if (temp != "0") {
+                temp += value
+                editText?.setText(temp)
+            } else {
+                editText?.setText(value)
+
+            }
+        }
     }
 
 }
