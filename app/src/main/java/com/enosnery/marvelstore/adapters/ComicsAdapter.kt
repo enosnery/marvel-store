@@ -1,18 +1,16 @@
-package adapters
+package com.enosnery.marvelstore.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import android.widget.TextClock
 import android.widget.TextView
-import classes.Comic
-import com.enosnery.swissknife.R
-import com.enosnery.swissknife.R.id.*
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.list_view_item.view.*
+import com.bumptech.glide.Glide
+import com.enosnery.marvelstore.classes.Comic
+import com.enosnery.marvelstore.R
 
 class ComicsAdapter(private val context: Context, private val dataSource: ArrayList<Comic>) : BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -30,7 +28,10 @@ class ComicsAdapter(private val context: Context, private val dataSource: ArrayL
 
         titleTextView.text = comic.title
         priceTextView.text = comic.price.toString()
-        Picasso.get().load(comic.pictureURL).into(imageView)
+        Glide.with(context).load(comic.pictureURL).into(imageView)
+        if (comic.rare){
+            rowView.setBackgroundColor(Color.YELLOW)
+        }
 
         return rowView
     }

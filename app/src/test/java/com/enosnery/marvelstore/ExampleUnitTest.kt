@@ -1,4 +1,4 @@
-package com.enosnery.swissknife
+package com.enosnery.marvelstore
 
 import org.junit.Test
 
