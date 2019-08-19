@@ -1,27 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:id="@+id/checkout_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/text_checkout_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true">
 
-        <TextView
-            android:id="@+id/text_main"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/text_checkout_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:layout_gravity="center"/>
-    </LinearLayout>
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/checkout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_checkout_container"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/checkout_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/checkout"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/checkout_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/checkout"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/header"
+                android:layout_width="103dp"
+                android:layout_height="59dp"
+                android:contentDescription="@string/app_name" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/header_title"
+                    android:layout_width="127dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="15sp"
+                    android:padding="10dp"
+                    android:text="@string/comic"
+                    android:scrollHorizontally="false"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/header_price"
+                    android:layout_width="69dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="15sp"
+                    android:padding="10dp"
+                    android:text="@string/price"
+                    android:scrollHorizontally="false"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/header_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="15sp"
+                    android:padding="10dp"
+                    android:text="@string/amount"
+                    android:scrollHorizontally="false"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/checkout_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/checkout_header">
+
+            <ImageView
+                android:id="@+id/checkout_image"
+                android:layout_width="103dp"
+                android:layout_height="102dp"
+                android:contentDescription="@string/app_name" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/checkout_title"
+                    android:layout_width="127dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:scrollHorizontally="false"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/checkout_price"
+                    android:layout_width="69dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:scrollHorizontally="false"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/checkout_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:scrollHorizontally="false"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/total_container"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/checkout_coupon_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="0.5"
+                    android:padding="10dp"
+                    android:scrollHorizontally="false"
+                    android:text="@string/coupon"
+                    android:textAlignment="viewStart"
+                    android:textSize="15sp" />
+                <EditText
+                    android:id="@+id/checkout_coupon"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_weight="0.5"
+                    android:padding="10dp"
+                    android:scrollHorizontally="false"
+                    android:textAlignment="viewEnd"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/total_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/checkout_total_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="0.5"
+                    android:padding="10dp"
+                    android:scrollHorizontally="false"
+                    android:text="@string/total"
+                    android:textAlignment="viewStart"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/checkout_total"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_weight="0.5"
+                    android:padding="10dp"
+                    android:scrollHorizontally="false"
+                    android:textAlignment="viewEnd"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/checkout_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/checkout" />
+        </LinearLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

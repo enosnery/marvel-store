@@ -1,6 +1,8 @@
 package com.enosnery.marvelstore.classes
 
-class Comic(
+import java.io.Serializable
+
+class Comic (
          val id:Long,
          val title: String,
          val issueNumber : Long,
@@ -10,4 +12,4 @@ class Comic(
          val price: Double,
          val pictureURL: String,
          val rare : Boolean
-)
+): Serializable

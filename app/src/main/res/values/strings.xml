@@ -2,8 +2,10 @@
     <string name="app_name">MARVEL STORE</string>
     <string name="open_calculator">Open Calculator</string>
     <string name="purchase_button">Purchase</string>
-    <string name="exit_message">Are you going out?</string>
-    <string name="yes">Yes.</string>
-    <string name="no">No!</string>
-    <string name="maybe">Maybe?</string>
+    <string name="checkout">Checkout</string>
+    <string name="total">Total:</string>
+    <string name="coupon">Coupon:</string>
+    <string name="comic">Comic</string>
+    <string name="price">Price</string>
+    <string name="amount">Amount</string>
 </resources>

@@ -5,30 +5,23 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.enosnery.marvelstore.R
 import com.enosnery.marvelstore.R.drawable.button_calc_number
 import com.enosnery.marvelstore.R.layout.activity_details
 import com.enosnery.marvelstore.classes.Comic
+import com.enosnery.marvelstore.classes.Purchase
 import kotlinx.android.synthetic.main.activity_details.*
 
 class DetailActivity : AppCompatActivity() {
 
     companion object {
-        const val EXTRA_TITLE = "title"
-        const val EXTRA_PRICE = "price"
-        const val EXTRA_URL = "url"
-        const val EXTRA_RARE = "rare"
+        const val EXTRA_COMIC = "comic"
+
 
         fun newIntent(context: Context, comic: Comic): Intent {
             val detailIntent = Intent(context, DetailActivity::class.java)
-
-            detailIntent.putExtra(EXTRA_TITLE, comic.title)
-            detailIntent.putExtra(EXTRA_PRICE, comic.price)
-            detailIntent.putExtra(EXTRA_URL, comic.pictureURL)
-            detailIntent.putExtra(EXTRA_RARE, comic.rare)
-
+            detailIntent.putExtra(EXTRA_COMIC, comic)
             return detailIntent
         }
     }
@@ -43,24 +36,23 @@ class DetailActivity : AppCompatActivity() {
         text_main.setPadding(10, 10, 10, 10)
         purchase_button.setBackgroundResource(button_calc_number)
 
+        val comic = intent.extras.getSerializable(EXTRA_COMIC) as Comic
 
-        val title = intent.extras.getString(EXTRA_TITLE)
-        val price = intent.extras.getDouble(EXTRA_PRICE)
-        val url = intent.extras.getString(EXTRA_URL)
-        val rare = intent.extras.getBoolean(EXTRA_RARE)
+        detail_title.text = comic.title
+        detail_price.text = comic.price.toString()
 
-        Log.e("details", title)
-        Log.e("details", price.toString())
-        Log.e("details", url)
-        Log.e("details", rare.toString())
-        detail_title.text = title
-        detail_price.text = price.toString()
-        if(rare) {
-            detail_rare.text = "Rare Comic!"
-        }else{
-            detail_rare.text = "Common Comic"
+        Glide.with(this).load(comic.pictureURL).into(detail_image)
+
+        purchase_button.setOnClickListener {
+            val purchase = Purchase(comic.title, comic.price, purchase_amount.text.toString().toInt(), comic.rare, comic.pictureURL)
+            purchase_amount.text = null
+            val intent = CheckoutActivity.newIntent(this, purchase)
+            startActivity(intent)
         }
+    }
 
-        Glide.with(this).load(url).into(detail_image)
+    override fun onBackPressed() {
+        super.onBackPressed()
+        purchase_amount.text = null
     }
 }

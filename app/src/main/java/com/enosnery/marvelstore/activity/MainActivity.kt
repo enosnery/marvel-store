@@ -1,20 +1,21 @@
 package com.enosnery.marvelstore.activity
 
-import com.enosnery.marvelstore.adapters.ComicsAdapter
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.enosnery.marvelstore.classes.Comic
+import android.widget.Toast
 import com.enosnery.marvelstore.R
-import com.enosnery.marvelstore.R.string.*
+import com.enosnery.marvelstore.R.string.app_name
+import com.enosnery.marvelstore.adapters.ComicsAdapter
+import com.enosnery.marvelstore.classes.Comic
+import com.enosnery.marvelstore.utils.ComicUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
-import org.apache.commons.codec.digest.DigestUtils
-import com.enosnery.marvelstore.utils.ComicUtils
-import kotlinx.android.synthetic.main.list_view_item.*
 import org.apache.commons.codec.binary.Hex
+import org.apache.commons.codec.digest.DigestUtils
 import java.io.IOException
 
 
@@ -25,9 +26,27 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: ComicsAdapter
     lateinit var comicsList : MutableList<Comic>
 
+    companion object {
+        const val EXTRA_IS_FINISHED = "comic"
+
+        fun newIntent(context: Context, finished: Boolean): Intent {
+            val detailIntent = Intent(context, MainActivity::class.java)
+            detailIntent.putExtra(EXTRA_IS_FINISHED, finished)
+            return detailIntent
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if(intent != null) {
+            if(intent.extras != null) {
+                val finished = intent.extras.getBoolean(EXTRA_IS_FINISHED)
+                if (finished) {
+                    Toast.makeText(context, "Checkout Finished!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
         text_main_container.setBackgroundColor(Color.BLACK)
         text_main.text = getString(app_name)
         text_main.setTextColor(Color.WHITE)
@@ -55,17 +74,8 @@ class MainActivity : AppCompatActivity() {
         })
 
         comics_list_view.setOnItemClickListener { _, _, position, _ ->
-            // 1
-            Log.e("details", comicsList[position].title)
-            Log.e("details", comicsList[position].price.toString())
-            Log.e("details", comicsList[position].pictureURL)
-            Log.e("details", comicsList[position].rare.toString())
             val comic = comicsList[position]
-
-            // 2
             val detailIntent = DetailActivity.newIntent(context, comic)
-
-            // 3
             startActivity(detailIntent)
         }
     }
