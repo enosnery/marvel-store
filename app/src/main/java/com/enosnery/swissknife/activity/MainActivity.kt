@@ -1,6 +1,8 @@
 package com.enosnery.swissknife.activity
 
+import adapters.ComicsAdapter
 import android.app.ActionBar
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
@@ -14,50 +16,52 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
+import classes.Comic
 import com.enosnery.swissknife.R
 import com.enosnery.swissknife.R.string.*
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.*
+import org.apache.commons.codec.digest.DigestUtils
+import org.json.JSONObject
+import utils.ComicUtils
+import java.io.IOException
 
 
 class MainActivity : AppCompatActivity() {
 
+    private val client = OkHttpClient()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        text_main_container.setBackgroundColor(Color.BLACK)
         text_main.text = getString(app_name)
         text_main.setTextColor(Color.WHITE)
         text_main.setBackgroundColor(Color.RED)
         text_main.setPadding(10,10,10,10)
-        button_main.text = getString(open_calculator)
-        button_main.setOnClickListener {
-                val intent = Intent(this, CalculatorActivity::class.java).apply {
-                    putExtra(EXTRA_MESSAGE, getString(app_name))
+        run(this)
+    }
+
+    fun run(context : Context) {
+        val ts = System.currentTimeMillis().toString()
+        val hash = DigestUtils.md5Hex(ts+"e5292934cda4a6c0f400eea657f48592ab32e6fe"+"c902c557127a2121a4b90fe59bc8d4a0")
+        val url = "https://gateway.marvel.com:443/v1/public/comics?noVariants=true&dateDescriptor=lastWeek&ts=$ts&apikey=c902c557127a2121a4b90fe59bc8d4a0&hash=$hash"
+        val request = Request.Builder()
+                .url(url)
+                .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {}
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body()?.string()
+                val comicsList = ComicUtils.prepareArray(responseData)
+                val adapter = ComicsAdapter(context, comicsList as ArrayList<Comic>)
+                runOnUiThread {
+                    comics_list_view.adapter = adapter
                 }
-            startActivity(intent)
 
-        }
-
-        main_relative.gravity = RelativeLayout.ALIGN_PARENT_RIGHT
-
+            }
+        })
     }
-
-    fun showDialog() {
-        super.onDestroy()
-        val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setMessage(exit_message)
-        builder.setNegativeButton(no){ _, _ ->
-            Toast.makeText(applicationContext, "Ok, awesome! How may I help you?", Toast.LENGTH_LONG).show()
-        }
-        builder.setPositiveButton(yes){ _, _ ->
-            this@MainActivity.finishAndRemoveTask()
-        }
-        builder.setNeutralButton(maybe){ _,_ ->
-            Toast.makeText(applicationContext, "Err...what?", Toast.LENGTH_LONG).show()
-        }
-        val dialog : AlertDialog = builder.create()
-
-        dialog.show()
-    }
-
 }
 
