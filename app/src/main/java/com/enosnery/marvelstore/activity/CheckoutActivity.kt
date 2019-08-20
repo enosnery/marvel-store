@@ -65,7 +65,7 @@ class CheckoutActivity : AppCompatActivity() {
                 if (s != null) {
                     if (purchase.rare) {
                         if (s.toString() == "rareCoupon") {
-                            val totalValue = checkout_total.text.toString().toDouble()
+                            val totalValue = checkout_total.text.toString().replace(",",".").toDouble()
                             val newValue = totalValue - (0.25 * totalValue)
                             checkout_total.text = String.format("%.2f", newValue)
                         }else{
@@ -73,7 +73,7 @@ class CheckoutActivity : AppCompatActivity() {
                         }
                     }else{
                         if (s.toString() == "commonCoupon") {
-                            val totalValue = checkout_total.text.toString().toDouble()
+                            val totalValue = checkout_total.text.toString().replace(",",".").toDouble()
                             val newValue = totalValue - (0.1 * totalValue)
                             checkout_total.text = String.format("%.2f", newValue)
                         }else{

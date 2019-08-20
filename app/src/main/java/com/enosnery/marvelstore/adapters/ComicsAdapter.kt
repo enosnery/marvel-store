@@ -29,10 +29,6 @@ class ComicsAdapter(private val context: Context, private val dataSource: ArrayL
         titleTextView.text = comic.title
         priceTextView.text = comic.price.toString()
         Glide.with(context).load(comic.pictureURL).into(imageView)
-        if (comic.rare){
-            rowView.setBackgroundColor(Color.YELLOW)
-        }
-
         return rowView
     }
 
